@@ -23,10 +23,7 @@ const object = {
               edges: [
                 {
                   key: 'bar',
-                  node: {
-                    value: 'baz',
-                    edges: []
-                  }
+                  node: { value: 'baz' }
                 }
               ]
             }
@@ -40,17 +37,11 @@ const object = {
         edges: [
           {
             key: 'cream',
-            node: {
-              value: 'cone',
-              edges: []
-            }
+            node: { value: 'cone' }
           },
           {
             key: 'd',
-            node: {
-              value: 'coffee',
-              edges: []
-            }
+            node: { value: 'coffee' }
           }
         ],
         value: 'ice'
@@ -63,7 +54,7 @@ const string = [
   'fo: mo',
   '  o: bar',
   '    bar: baz',
-  'ice',
+  'ice: ice',
   '  cream: cone',
   '  d: coffee'
 ].join('\n')

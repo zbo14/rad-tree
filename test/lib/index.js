@@ -10,6 +10,23 @@ describe('lib/index', () => {
     fixtures.kvPairs.forEach(([k, v]) => this.tree.set(k, v))
   })
 
+  describe('#set()', () => {
+    it('sets a key/value pair that creates a node with no value', () => {
+      this.tree.set('foobaz')
+
+      assert.strictEqual(this.tree.toString(), [
+        'fo: mo',
+        '  o: bar',
+        '    ba',
+        '      r: baz',
+        '      z: foobaz',
+        'ice: ice',
+        '  cream: cone',
+        '  d: coffee'
+      ].join('\n'))
+    })
+  })
+
   describe('#get()', () => {
     it('gets each value by key', () => {
       assert.strictEqual(this.tree.get('fo'), 'mo')
@@ -37,9 +54,9 @@ describe('lib/index', () => {
     })
   })
 
-  describe('#remove()', () => {
-    it('removes key', () => {
-      assert.strictEqual(this.tree.remove('icecream'), true)
+  describe('#delete()', () => {
+    it('deletes key', () => {
+      assert.strictEqual(this.tree.delete('icecream'), true)
 
       assert.deepStrictEqual(this.tree.toObject(), {
         edges: [
@@ -56,8 +73,7 @@ describe('lib/index', () => {
                       {
                         key: 'bar',
                         node: {
-                          value: 'baz',
-                          edges: []
+                          value: 'baz'
                         }
                       }
                     ]
@@ -73,8 +89,7 @@ describe('lib/index', () => {
                 {
                   key: 'd',
                   node: {
-                    value: 'coffee',
-                    edges: []
+                    value: 'coffee'
                   }
                 }
               ],
@@ -88,14 +103,65 @@ describe('lib/index', () => {
         'fo: mo',
         '  o: bar',
         '    bar: baz',
-        'ice',
+        'ice: ice',
         '  d: coffee'
       ].join('\n'))
     })
 
-    it('removes multiple keys', () => {
-      assert.strictEqual(this.tree.remove('icecream'), true)
-      assert.strictEqual(this.tree.remove('ice'), true)
+    it('deletes another key', () => {
+      assert.strictEqual(this.tree.delete('foo'), true)
+
+      assert.deepStrictEqual(this.tree.toObject(), {
+        edges: [
+          {
+            key: 'fo',
+            node: {
+              value: 'mo',
+              edges: [
+                {
+                  key: 'obar',
+                  node: {
+                    value: 'baz'
+                  }
+                }
+              ]
+            }
+          },
+          {
+            key: 'ice',
+            node: {
+              edges: [
+                {
+                  key: 'cream',
+                  node: {
+                    value: 'cone'
+                  }
+                },
+                {
+                  key: 'd',
+                  node: {
+                    value: 'coffee'
+                  }
+                }
+              ],
+              value: 'ice'
+            }
+          }
+        ]
+      })
+
+      assert.strictEqual(this.tree.toString(), [
+        'fo: mo',
+        '  obar: baz',
+        'ice: ice',
+        '  cream: cone',
+        '  d: coffee'
+      ].join('\n'))
+    })
+
+    it('deletes multiple keys', () => {
+      assert.strictEqual(this.tree.delete('icecream'), true)
+      assert.strictEqual(this.tree.delete('ice'), true)
 
       assert.deepStrictEqual(this.tree.toObject(), {
         edges: [
@@ -112,8 +178,7 @@ describe('lib/index', () => {
                       {
                         key: 'bar',
                         node: {
-                          value: 'baz',
-                          edges: []
+                          value: 'baz'
                         }
                       }
                     ]
@@ -125,7 +190,6 @@ describe('lib/index', () => {
           {
             key: 'iced',
             node: {
-              edges: [],
               value: 'coffee'
             }
           }
@@ -140,14 +204,14 @@ describe('lib/index', () => {
       ].join('\n'))
     })
 
-    it('doesn\'t remove nonexistent key (too long)', () => {
-      assert.strictEqual(this.tree.remove('foobarbaz'), false)
+    it('doesn\'t delete nonexistent key (too long)', () => {
+      assert.strictEqual(this.tree.delete('foobarbaz'), false)
       assert.deepStrictEqual(this.tree.toObject(), fixtures.object)
       assert.strictEqual(this.tree.toString(), fixtures.string)
     })
 
-    it('doesn\'t remove nonexistent key (too short)', () => {
-      assert.strictEqual(this.tree.remove('fooba'), false)
+    it('doesn\'t delete nonexistent key (too short)', () => {
+      assert.strictEqual(this.tree.delete('fooba'), false)
       assert.deepStrictEqual(this.tree.toObject(), fixtures.object)
       assert.strictEqual(this.tree.toString(), fixtures.string)
     })
