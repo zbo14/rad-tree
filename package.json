@@ -1,7 +1,12 @@
 {
   "name": "rad-tree",
+  "description": "Small radix tree library",
   "version": "1.0.0",
   "main": "lib/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zbo14/rad-tree"
+  },
   "scripts": {
     "doc": "jsdoc -r lib README.md && open out/index.html",
     "lint": "eslint lib test",
