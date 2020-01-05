@@ -27,7 +27,7 @@ tree.set('icecream', 'cone')
 tree.set('foo', 'bar')
 tree.set('iced', 'coffee')
 tree.set('foobar', 'baz')
-tree.set('ice')
+tree.set('ice') // value defaults to `ice`
 tree.set('fo', 'mo')
 ```
 
